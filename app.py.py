@@ -6,9 +6,8 @@ import base64
 
 # --- Page Config ---
 st.set_page_config(page_title="Titanic EDA Dashboard", layout="wide")
-st.title("🚢 Titanic Data Analytics Dashboard")
 
-# --- Add Background Image ---
+# --- Add Titanic Image Background ---
 def add_bg_from_local(image_file):
     with open(image_file, "rb") as f:
         encoded = base64.b64encode(f.read()).decode()
@@ -25,8 +24,10 @@ def add_bg_from_local(image_file):
     """
     st.markdown(css, unsafe_allow_html=True)
 
-# Add the Titanic background image
-add_bg_from_local("titanic.jpg")  # Ensure 'titanic.jpg' is in the same directory as app.py
+add_bg_from_local("titanic.jpg")  # Make sure this file exists in your app folder
+
+# --- Title ---
+st.title("🚢 Titanic Data Analytics Dashboard")
 
 # --- Load Data ---
 @st.cache_data
@@ -42,9 +43,9 @@ if st.checkbox("Show Raw Data"):
 # --- Sidebar Filters ---
 st.sidebar.header("Filter Options")
 
+# Gender and Class
 gender_options = ["All"] + df["Sex"].unique().tolist()
 pclass_options = ["All"] + sorted(df["Pclass"].unique().tolist())
-
 gender = st.sidebar.selectbox("Select Gender", options=gender_options)
 pclass = st.sidebar.selectbox("Select Passenger Class", options=pclass_options)
 
@@ -116,7 +117,7 @@ with col4:
     ax4.set_title("Survival by Passenger Class")
     st.pyplot(fig4)
 
-# Row 3: Embarked | Heatmap
+# Row 3: Survival by Embarked | Correlation Heatmap
 col5, col6 = st.columns(2)
 
 with col5:
