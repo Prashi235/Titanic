@@ -24,7 +24,7 @@ def add_bg_from_local(image_file):
     """
     st.markdown(css, unsafe_allow_html=True)
 
-add_bg_from_local("titanic.jpg")  # Make sure this file exists in your app folder
+add_bg_from_local("titanic.jpg")  # Place this image file alongside app.py.py
 
 # --- Title ---
 st.title("🚢 Titanic Data Analytics Dashboard")
