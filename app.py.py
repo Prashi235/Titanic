@@ -26,7 +26,7 @@ def add_bg_from_local(image_file):
     st.markdown(css, unsafe_allow_html=True)
 
 # Add the Titanic background image
-add_bg_from_local("titanic.jpg")  # Make sure this file is in the same directory
+add_bg_from_local("titanic.jpg")  # Ensure 'titanic.jpg' is in the same directory as app.py
 
 # --- Load Data ---
 @st.cache_data
