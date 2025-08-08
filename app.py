@@ -2,23 +2,46 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import base64
 
-# Page Config
+# --- Page Config ---
 st.set_page_config(page_title="Titanic EDA Dashboard", layout="wide")
+
+# --- Add Background Image ---
+def add_bg_from_local(image_file):
+    with open(image_file, "rb") as f:
+        encoded = base64.b64encode(f.read()).decode()
+    css = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{encoded}");
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-attachment: fixed;
+    }}
+    </style>
+    """
+    st.markdown(css, unsafe_allow_html=True)
+
+# 🔽 Add your background image file here
+add_bg_from_local("titanic.jpg")
+
+# --- App Title ---
 st.title("🚢 Titanic Data Analytics Dashboard")
 
-# Load Data
+# --- Load Data ---
 @st.cache_data
 def load_data():
     return pd.read_csv("cleaned_titanic.csv")
 
 df = load_data()
 
-# Show Raw Data
+# --- Show Raw Data ---
 if st.checkbox("Show Raw Data"):
     st.dataframe(df)
 
-# Sidebar Filters
+# --- Sidebar Filters ---
 st.sidebar.header("Filter Options")
 
 # Gender and Class
@@ -37,7 +60,7 @@ fare_min = float(df["Fare"].min())
 fare_max = float(df["Fare"].max())
 fare_range = st.sidebar.slider("Select Fare Range", min_value=fare_min, max_value=fare_max, value=(fare_min, fare_max))
 
-# Apply Filters
+# --- Apply Filters ---
 filtered_df = df.copy()
 
 if gender != "All":
@@ -55,13 +78,13 @@ filtered_df = filtered_df[
 filtered_df = filtered_df.copy()
 filtered_df["Survival Status"] = filtered_df["Survived"].map({0: "Did Not Survive", 1: "Survived"})
 
-# Display Filtered Data
+# --- Display Filtered Data ---
 st.subheader("📄 Filtered Data Preview")
 st.write(filtered_df.head())
 
-# 📊 Visualizations in Columns
+# --- 📊 Visualizations in Columns ---
 
-# Row 1: Survival Count by Gender | Age Distribution
+# Row 1: Survival Count | Age Distribution
 col1, col2 = st.columns(2)
 
 with col1:
@@ -114,6 +137,6 @@ with col6:
     ax6.set_title("Correlation Between Features")
     st.pyplot(fig6)
 
-# Summary Stats
+# --- Summary Stats ---
 st.subheader("📋 Summary Statistics")
 st.write(filtered_df.describe(include="all"))
