@@ -20,18 +20,36 @@ if st.checkbox("Show Raw Data"):
 
 # Sidebar Filters
 st.sidebar.header("Filter Options")
+
+# Gender and Class
 gender_options = ["All"] + df["Sex"].unique().tolist()
 pclass_options = ["All"] + sorted(df["Pclass"].unique().tolist())
-
 gender = st.sidebar.selectbox("Select Gender", options=gender_options)
 pclass = st.sidebar.selectbox("Select Passenger Class", options=pclass_options)
 
-# Filter Data
+# Age Slider
+age_min = int(df["Age"].min())
+age_max = int(df["Age"].max())
+age_range = st.sidebar.slider("Select Age Range", min_value=age_min, max_value=age_max, value=(age_min, age_max))
+
+# Fare Slider
+fare_min = float(df["Fare"].min())
+fare_max = float(df["Fare"].max())
+fare_range = st.sidebar.slider("Select Fare Range", min_value=fare_min, max_value=fare_max, value=(fare_min, fare_max))
+
+# Apply Filters
 filtered_df = df.copy()
+
 if gender != "All":
     filtered_df = filtered_df[filtered_df["Sex"] == gender]
+
 if pclass != "All":
     filtered_df = filtered_df[filtered_df["Pclass"] == pclass]
+
+filtered_df = filtered_df[
+    (filtered_df["Age"] >= age_range[0]) & (filtered_df["Age"] <= age_range[1]) &
+    (filtered_df["Fare"] >= fare_range[0]) & (filtered_df["Fare"] <= fare_range[1])
+]
 
 # Add Survival Status Column
 filtered_df = filtered_df.copy()
