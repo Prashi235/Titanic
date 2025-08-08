@@ -116,6 +116,4 @@ with col6:
 
 # Summary Stats
 st.subheader("📋 Summary Statistics")
-st.write(filtered_df.describe(include="all"))
-
-
+st.write(filtered_df.describe(include="all")) 
