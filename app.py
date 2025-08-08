@@ -2,6 +2,26 @@ import streamlit as st
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import base64
+
+def set_bg_image(image_file):
+    with open(image_file, "rb") as f:
+        data = base64.b64encode(f.read()).decode()
+    page_bg_img = f"""
+    <style>
+    .stApp {{
+        background-image: url("data:image/jpg;base64,{data}");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    </style>
+    """
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
+# Call the function with your image filename
+set_bg_image("titanic.jpg")
 
 # Page Config
 st.set_page_config(page_title="Titanic EDA Dashboard", layout="wide")
@@ -117,3 +137,4 @@ with col6:
 # Summary Stats
 st.subheader("📋 Summary Statistics")
 st.write(filtered_df.describe(include="all"))
+
